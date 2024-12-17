@@ -8,13 +8,12 @@ struct user_schema{
     int age;   
 };
 
-//unique id will be serial number of line.
 int exists(char a[]){
-    FILE * fp = fopen("practice.txt", "r");
-    char buffer[100];
+    FILE * fp = fopen("user.txt", "r");
+    char buffer[Max_Size];
     char id[Max_Size];
     int found =0 ;
-    while(fgets(buffer, 100, fp)){
+    while(fgets(buffer, Max_Size, fp)){
         if(sscanf(buffer, "{ id : %[^,]s", id)==1){
             if(strcmp(id, a)==0){
                 found =1;
@@ -27,34 +26,34 @@ int exists(char a[]){
 }
 
 void add_user(){
-    //first check if user already exists or not, if not exists then append it in file else show message that user already exists. 
     struct user_schema user;
-    //check if any user already exists with this id or not if exists then return with message else continue;
     char another = 'y';
 
     while(another=='y'){
         fflush(stdin);
         printf("\nEnter id of user : ");
-        gets(user.id);
+        scanf("%[^\n]s", user.id);
+        fflush(stdin);
 
         while(exists(user.id)){
             printf("\nuser already exists with this id please enter different id here : ");
-            gets(user.id);
+            scanf("%[^\n]s", user.id);
+
         }
-    
+        fflush(stdin);
         printf("\nEnter name of user : ");
-        gets(user.name);
+        scanf("%[^\n]s", user.name);
 
 
         printf("\nEnter age of user : ");
         scanf("%d", &user.age);
     
         FILE *fp;
-        fp = fopen("practice.txt", "a");
+        fp = fopen("user.txt", "a");
         fprintf(fp,"{ id : %s, name : %s, age : %d }\n", user.id, user.name, user.age);
 
         printf("Add another user(y/n): ");
-        fflush(stdin);//to clear input buffer.
+        fflush(stdin);
         scanf("%c",&another);
 
         fclose(fp);
@@ -64,7 +63,7 @@ void add_user(){
 }
 
 void display_users(){
-    FILE *fp = fopen("practice.txt", "r");
+    FILE *fp = fopen("user.txt", "r");
 
     if(fp==NULL){
         printf("No user exists in database\n");
@@ -72,13 +71,12 @@ void display_users(){
     }
     struct user_schema user;
     printf("id        name          age \n\n");
-    char buffer[100];
-    while(fgets(buffer, 100, fp)){
-        if(sscanf(buffer, "{ id : %[^,], name : %[^,], age : %d }", user.id, user.name, &user.age)==3){ //%[^,] This will read string untill the next comma.
+    char buffer[Max_Size];
+    while(fgets(buffer, Max_Size, fp)){
+        if(sscanf(buffer, "{ id : %[^,], name : %[^,], age : %d }", user.id, user.name, &user.age)==3){
             printf("%-8s %-15s %-3d\n", user.id, user.name, user.age);
         }
     }
-    //here we are storing each line in buffer and then we are scanning buffer to get our desired output.
     printf("\n");
     fclose(fp);
     printf("\n--------------------------------------\n");
@@ -87,7 +85,7 @@ void display_users(){
 
 int delete_user(char id[]){
     if(exists(id)){
-        FILE *fp = fopen("practice.txt", "r");
+        FILE *fp = fopen("user.txt", "r");
         FILE *ft = fopen("temp.txt", "w");
 
         char buffer[Max_Size];
@@ -102,8 +100,8 @@ int delete_user(char id[]){
         }
         fclose(fp);
         fclose(ft);
-        remove("practice.txt");
-        rename("temp.txt","practice.txt");
+        remove("user.txt");
+        rename("temp.txt","user.txt");
 
     }else{
         printf("No such user exists in our database \n");
@@ -118,7 +116,7 @@ void update_user(char id[]){
 
     if(!delete_user(id)) return;
     
-    FILE*fp = fopen("practice.txt", "a");
+    FILE*fp = fopen("user.txt", "a");
 
     if(!fp){
         printf("Error Opening file.");
@@ -127,8 +125,10 @@ void update_user(char id[]){
 
     char name[Max_Size];
     int age;
+    fflush(stdin);
     printf("Enter new name : ");
-    gets(name);
+    scanf("%[^\n]s", name);
+    fflush(stdin);
     printf("Enter new age : ");
     scanf("%d",&age);
 
@@ -141,7 +141,7 @@ void update_user(char id[]){
 int main(){
 
     int flag = 1;
-    int operation;//initialize operation with random value;
+    int operation;
     do{
         printf("\nselect the operation you want to perform : \n");
         printf("Press 1 to add new user(which does not exists in our database)\n");
@@ -152,7 +152,7 @@ int main(){
         scanf("%d", &operation);
         
         if(operation==1){
-            fflush(stdin);//to clear the input buffer.
+            fflush(stdin);
             add_user();
         }
         else if(operation==2){
@@ -163,7 +163,7 @@ int main(){
             fflush(stdin);
 
             printf("Please enter the id of user you want to update : ");
-            gets(id);
+            scanf("%[^\n]s", id);
             printf("\n");
             update_user(id);
         }
@@ -171,7 +171,7 @@ int main(){
             char id[Max_Size];
             fflush(stdin);
             printf("Please enter the id of user you want to delete : ");
-            gets(id);
+            scanf("%[^\n]s", id);
             printf("\n");
             delete_user(id);
         }
@@ -185,5 +185,4 @@ int main(){
 
 
 //remaining portion : 
-//1.delete practice file anbd rename temp file as practice file.
 //2. organize the code and optimize it.
