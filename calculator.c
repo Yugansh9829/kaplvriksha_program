@@ -22,20 +22,14 @@ void push_oper(struct operators *obj, char val){
 }
 
 int pop_int(struct digit *obj){
-    if(obj->top<0){
-        printf("\n*****Please enter correct expression*****\n\n"); 
-        exit(EXIT_FAILURE);
-        return 0;
-    }
+    if(obj->top<0) return 1e7;
+    
     return obj->value[obj->top--];
 }
 
 char pop_oper(struct operators *obj){
-    if(obj->top==-1){
-        printf("\n*****Please enter correct expression*****\n\n");
-        exit(EXIT_FAILURE);
-        return 0;
-    }
+    if(obj->top==-1) return 'f';
+    
     return obj->operator[obj->top--];
 }
 
@@ -58,8 +52,7 @@ int perform(int a, int b, char op){
             break;
         case '/':
             if (a == 0) {
-                printf("Error: Division by zero.\n");
-                exit(EXIT_FAILURE);
+                return 1e7;
             }
             return b / a;
             break;
@@ -91,15 +84,28 @@ int solve(char str[]){
             if(oper.top!=-1 && (precedence(oper.operator[oper.top]) >= precedence(str[i]))){
                 int a = pop_int(&value);
                 int b = pop_int(&value);
+                if(a == 1e7 || b== 1e7){
+                    printf("\n******Please enter valid expression*******\n");
+                    return 0;
+                }
                 char op = pop_oper(&oper);
-                push_int(&value, perform(a,b,op));
+                if(op=='f'){
+                    printf("\n******Please enter valid expression*******\n");
+                    return 0;
+                }
+                int ans = perform (a,b,op);
+                if(ans == 1e7){
+                    printf("\n*********Division by zero***********\n");
+                    return 0;
+                }
+                push_int(&value, ans);
             }
             int val = 0;
             i++;
             while(str[i]==' ')i++;
 
             if(!(str[i]-'0'>=0 && str[i]-'0'<=9)){
-                printf("*****Please Enter Valid Expression*****");
+                printf("\n******Please enter valid expression*******\n");
                 exit(EXIT_FAILURE);
             }
             while(i<strlen(str) && (str[i]-'0'>=0 && str[i]-'0'<=9)){
@@ -115,13 +121,25 @@ int solve(char str[]){
             if(oper.top!=-1 && (precedence(oper.operator[oper.top]) >= precedence(str[i]))){
                 int a = pop_int(&value);
                 int b = pop_int(&value);
+                if(a == 1e7 || b== 1e7){
+                    printf("\n******Please enter valid expression*******\n");
+                    return 0;
+                }
                 char op = pop_oper(&oper);
-                push_int(&value, perform(a,b,op));
+                if(op=='f'){
+                    printf("\n******Please enter valid expression*******\n");
+                    return 0;
+                }
+                int ans = perform(a,b,op);
+                if(ans == 1e7){
+                    printf("\n*********Division by zero***********\n");
+                    return 0;
+                }
+                push_int(&value, ans);
             }
             push_oper(&oper, str[i]);
         }else{
-            printf("\n*****Please enter correct expression*****\n");
-            exit(EXIT_FAILURE);
+            printf("\n******Please enter valid expression*******\n");
             return 0;
         }
     }
@@ -129,12 +147,24 @@ int solve(char str[]){
     while(oper.top!=-1 ){
         int a = pop_int(&value);
         int b = pop_int(&value);
+        if(a == 1e7 || b== 1e7){
+            printf("\n******Please enter valid expression*******\n");
+            return 0;
+        }
         char op = pop_oper(&oper);
-        push_int(&value, perform(a,b,op));
+        if(op=='f'){
+            printf("\n******Please enter valid expression*******\n");
+        }
+        int ans = perform(a,b,op);
+        if(ans == 1e7){
+            printf("\n*********Division by zero***********\n");
+            return 0;
+        }
+        push_int(&value, ans);
     }
     if(value.top>0){
-        printf("\n******Please enter valid string as input*******");
-        exit(EXIT_FAILURE);
+        printf("\n******Please enter valid expression*******\n");
+        return 0;
     }
     return pop_int(&value);
 }
@@ -146,7 +176,7 @@ int main(void){
     fflush(stdin);
     scanf("%[^\n]s", expression);
 
-    printf("Result after calculation is : %d", solve(expression));
+    printf(" \n Result after calculation is : %d", solve(expression));
     
     return 0;
 }
