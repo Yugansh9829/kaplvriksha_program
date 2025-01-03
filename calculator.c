@@ -13,12 +13,16 @@ struct operators{
     int top;
 };
 
-void push_int(struct digit *obj, int val){
-    obj->value[++obj->top]=val;
+void push_int(struct digit *obj, int value){
+    obj->value[++obj->top]=value;
+
+    return;
 }
 
-void push_oper(struct operators *obj, char val){
-    obj->operator[++obj->top]=val;
+void push_oper(struct operators *obj, char value){
+    obj->operator[++obj->top]=value;
+
+    return;
 }
 
 int pop_int(struct digit *obj){
@@ -33,28 +37,28 @@ char pop_oper(struct operators *obj){
     return obj->operator[obj->top--];
 }
 
-int precedence(char oper){
-    if(oper=='+' || oper=='-')return 1;
-    else if(oper=='*' || oper=='/')return 2;
+int precedence(char operator){
+    if(operator=='+' || operator=='-')return 1;
+    else if(operator=='*' || operator=='/')return 2;
     return 0;
 }
 
-int perform(int a, int b, char op){
-    switch(op){
+int perform(int operand_1, int operand_2, char operator){
+    switch(operator){
         case '+' : 
-            return a+b;
+            return operand_1+operand_2;
             break;
         case '-' :
-            return a-b;
+            return operand_1-operand_2;
             break;
         case '*':
-            return  a*b;
+            return operand_1*operand_2;
             break;
         case '/':
-            if (a == 0) {
+            if (operand_1 == 0) {
                 return 1e7;
             }
-            return b / a;
+            return operand_2 / operand_1;
             break;
         default : 
             return 0;
@@ -64,6 +68,7 @@ int perform(int a, int b, char op){
 int solve(char str[]){
     struct digit value;
     struct operators oper;
+
     value.top = -1;
     oper.top = -1;
 
