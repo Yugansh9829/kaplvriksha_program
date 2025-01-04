@@ -38,8 +38,10 @@ char pop_oper(struct operators *obj){
 }
 
 int precedence(char operator){
-    if(operator=='+' || operator=='-')return 1;
-    else if(operator=='*' || operator=='/')return 2;
+    if(operator=='+')return 2;
+    else if(operator=='-') return 1;
+    else if(operator=='*')return 3;
+    else if(operator=='/')return 4;
     return 0;
 }
 
@@ -87,23 +89,23 @@ int solve(char str[]){
         }
         else if(str[i]=='-'){
             if(oper.top!=-1 && (precedence(oper.operator[oper.top]) >= precedence(str[i]))){
-                int a = pop_int(&value);
-                int b = pop_int(&value);
-                if(a == 1e7 || b== 1e7){
+                int operand_1 = pop_int(&value);
+                int operand_2 = pop_int(&value);
+                if(operand_1 == 1e7 || operand_2== 1e7){
                     printf("\n******Please enter valid expression*******\n");
                     return 0;
                 }
-                char op = pop_oper(&oper);
-                if(op=='f'){
+                char operator = pop_oper(&oper);
+                if(operator=='f'){
                     printf("\n******Please enter valid expression*******\n");
                     return 0;
                 }
-                int ans = perform (a,b,op);
-                if(ans == 1e7){
+                int answer = perform (operand_1, operand_2, operator);
+                if(answer == 1e7){
                     printf("\n*********Division by zero***********\n");
                     return 0;
                 }
-                push_int(&value, ans);
+                push_int(&value, answer);
             }
             int val = 0;
             i++;
@@ -124,18 +126,18 @@ int solve(char str[]){
         }
         else if(str[i]=='+' || str[i]=='*' || str[i]=='/'){
             if(oper.top!=-1 && (precedence(oper.operator[oper.top]) >= precedence(str[i]))){
-                int a = pop_int(&value);
-                int b = pop_int(&value);
-                if(a == 1e7 || b== 1e7){
+                int opearand_1 = pop_int(&value);
+                int operand_2 = pop_int(&value);
+                if(opearand_1 == 1e7 || operand_2== 1e7){
                     printf("\n******Please enter valid expression*******\n");
                     return 0;
                 }
-                char op = pop_oper(&oper);
-                if(op=='f'){
+                char operator = pop_oper(&oper);
+                if(operator=='f'){
                     printf("\n******Please enter valid expression*******\n");
                     return 0;
                 }
-                int ans = perform(a,b,op);
+                int ans = perform(opearand_1,operand_2,operator);
                 if(ans == 1e7){
                     printf("\n*********Division by zero***********\n");
                     return 0;
@@ -150,17 +152,17 @@ int solve(char str[]){
     }
 
     while(oper.top!=-1 ){
-        int a = pop_int(&value);
-        int b = pop_int(&value);
-        if(a == 1e7 || b== 1e7){
+        int operand_1 = pop_int(&value);
+        int operand_2 = pop_int(&value);
+        if(operand_1 == 1e7 || operand_2== 1e7){
             printf("\n******Please enter valid expression*******\n");
             return 0;
         }
-        char op = pop_oper(&oper);
-        if(op=='f'){
+        char operator = pop_oper(&oper);
+        if(operator=='f'){
             printf("\n******Please enter valid expression*******\n");
         }
-        int ans = perform(a,b,op);
+        int ans = perform(operand_1, operand_2, operator);
         if(ans == 1e7){
             printf("\n*********Division by zero***********\n");
             return 0;
