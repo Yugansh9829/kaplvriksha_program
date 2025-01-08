@@ -24,7 +24,7 @@ void check_vowels(char *matrix[rows][cols]){
             char *str = matrix[i][j];
             int idx = 0;
             // printf("comparing %c \n", *str);
-            if(*(str)=='a' || *(str)=='e' || *(str)=='i' || *(str)=='o' || *(str)=='u')
+            if(*(str)=='a' || *(str)=='e' || *(str)=='i' || *(str)=='o' || *(str)=='u' || *(str)=='A' || *(str)=='E' || *(str)=='I' || *(str)=='O' || *(str)=='U')
                 number_of_strings_with_vowels++;
             
         }
