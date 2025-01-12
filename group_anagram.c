@@ -11,18 +11,19 @@ int is_anagram(char *s, char *t){
         return 0;
     }
 
-    int freq_s[26]={0};
-    int freq_t[26]={0};
+    int freq[26]={0};
 
     while(*s!='\0'){
-        freq_s[*s-'a']++;
-        freq_t[*t-'a']++;
+        freq[*s-'a']++;
         s++;
-        t++;
     }
 
-    for(int i=0;i<26;i++){
-        if(freq_s[i]!=freq_t[i])return 0;
+    for(int index=0;index<size_t;index++){
+       if(freq[t[index]-'a']==0){
+            return 0;
+       }else{
+        freq[t[index]-'a']--;
+       }
     }
 
     return 1;
@@ -31,22 +32,22 @@ int is_anagram(char *s, char *t){
 void find_and_group_anagram(int counter){
     int visited[counter];
 
-    for(int i=0;i<counter;i++) visited[i] =0;
+    for(int index=0;index<counter;index++) visited[index] =0;
 
     printf("[");
-    for(int i=0;i<counter;i++){
-        if(visited[i])continue;
+    for(int index=0;index<counter;index++){
+        if(visited[index])continue;
 
-        if(i!=0) printf(",[\"%s\"", arr[i]);
-        else printf("[\"%s\"", arr[i]);
+        if(index!=0) printf(",[\"%s\"", arr[index]);
+        else printf("[\"%s\"", arr[index]);
 
-        visited[i] = 1;
+        visited[index] = 1;
 
-        for(int j=i+1;j<counter;j++){
+        for(int index_=index+1; index_<counter; index_++){
 
-            if(!visited[j] && is_anagram(arr[i], arr[j] )){
-                printf(",\"%s\"", arr[j]);
-                visited[j] = 1;
+            if(!visited[index_] && is_anagram(arr[index], arr[index_] )){
+                printf(",\"%s\"", arr[index_]);
+                visited[index_] = 1;
             }
         }
         printf("]");
@@ -58,10 +59,8 @@ void find_and_group_anagram(int counter){
 
 int main(){
     char *str = (char *)malloc(100*sizeof(char));
-
     scanf("%s", str);
 
-   
     int counter =0;
     while(*str != '\0'){
 
@@ -84,9 +83,6 @@ int main(){
         return 0;
     }
     find_and_group_anagram(counter);
-
-
-
-
     return 0;
+
 }
