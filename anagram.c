@@ -19,22 +19,22 @@ void find_anagram(char s[100], char t[100]){
         return;
     }
 
-    int freq_1[26] = {0};
-    int freq_2[26] = {0};
+    int freq[26] = {0};
 
-    for(int i=0;i<size_s;i++){
-        freq_1[s[i]-'a']++;
-        freq_2[t[i]-'a']++;
+    for(int index=0;index<size_s;index++){
+        freq[s[index]-'a']++;
     }
 
-    for(int i=0;i<26;i++){
-        if(freq_1[i]!=freq_2[i]){
+    for(int index=0;index<size_t;index++){
+        if(freq[t[index]-'a']==0){
             printf("false");
             return;
+        }else{
+            freq[t[index]-'a']--;
         }
     }
-
     printf("true");
+    
     return ;
 
 }
