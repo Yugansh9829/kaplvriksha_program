@@ -13,10 +13,20 @@ int calculate_size(char string[]){
 int atoi(char string[], int size_of_string){
     int number = 0;
     char *pointer = string;
+    int negative = 0;
+    if(*pointer == '-'){
+        negative = 1;
+        pointer++;
+    }
     while(*pointer != '\0'){
+
+        if(*pointer-'0'<0 || *pointer-'0'>9) return 0;
+
         number = (number*10) + (*(pointer)-'0');
         pointer++;
     }
+
+    if(negative) number = -number;
 
     return number;
 }
