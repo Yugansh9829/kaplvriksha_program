@@ -24,6 +24,10 @@ void digit_to_number(int number){
 
     for(int i=0;i<idx;i++) printf("%s", ans[i]);
 
+    for(int i=0;i<50;i++){
+        free(ans[i]);
+    }
+
     free(ans);
     return;
 }
